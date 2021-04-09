@@ -34,12 +34,15 @@
         <div class="col">
             创建时间
         </div>
+        <div class="col">
+            操作
+        </div>
     </div>
     {% for ci in page_setup %}
         <div class="row">
             <div class="row">
                 <div class="col">
-                    {{ ci.user.name }}
+                    {{ ci.user.last_name }}
                 </div>
                 <div class="col">
                     {{ ci.name }}
@@ -50,6 +53,9 @@
                 <div class="col">
                     {{ ci.created_time }}
                 </div>
+                <div class="col">
+                    s
+                </div>
             </div>
         </div>
     {% endfor %}
@@ -57,5 +63,4 @@
         {% bootstrap_pagination page_setup url="" size="" %}
     </div>
 </div>
-    
 {% endblock %}

@@ -5,11 +5,6 @@ from django import forms
 from django.forms import ModelForm
 
 
-# class ClockInForm(ModelForm):
-#     class Meta:
-#         model = ClockIn
-#         fields = "__all__"
-
 class ClockInForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         # 动态的选项
@@ -32,7 +27,6 @@ class ClockInForm(forms.Form):
         user_id = self._user.id
         setup_id = self.cleaned_data['setup_id']
         image_0 = self.cleaned_data['iamge_0']
-        # # image_1 = request.FILES['image_1']
         clock_in = ClockIn(
             user_id=user_id,
             setup_id=setup_id,

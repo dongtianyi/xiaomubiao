@@ -38,6 +38,9 @@
         <div class="col">
             打卡时间
         </div>
+        <div class="col">
+            操作
+        </div>
     </div>
     {% for ci in page_clockin %}
         <div class="row">
@@ -50,10 +53,13 @@
             <div class="col">
                 {{ ci.created_time }}
             </div>
+            <div class="col">
+                <a class="nav-link" href="{% url 'delete_clockin' pk=ci.id %}">删除</a>
+            </div>
         </div>
     {% endfor %}
     <div class="row">
-        {% bootstrap_pagination page_clockin url="" size="" %}
+        {% bootstrap_pagination page_clockin url="" size="large" %}
     </div>
 </div>
 

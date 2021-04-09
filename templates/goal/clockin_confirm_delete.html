@@ -1,0 +1,37 @@
+<!-- templates/home.html-->
+{% extends '../base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}删除打卡{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Content here -->
+    <div class="row">
+        <p class="text-center fs-3">确认删除</p>
+    </div>
+     <div class="row">
+        <p class="text-center fs-3">创建时间: {{ clockin.created_time }}</p>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img src="{{ clockin.image_0.url }}" class="img-fluid">
+        </div>
+    </div>
+    <div class="row">
+        <form  action="" method="post" class="form">
+            {% csrf_token %}
+                {% buttons %}<button type="submit" class="btn btn-primary form-control">确认删除?</button>{% endbuttons %}
+        </form>
+    </div>
+</div>
+{% endblock %}

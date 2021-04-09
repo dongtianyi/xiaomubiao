@@ -57,3 +57,6 @@ class ClockIn(models.Model):
     image_0 = models.ImageField()
     # 打卡时间
     created_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-id"]

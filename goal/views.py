@@ -9,6 +9,9 @@ from django.urls import reverse
 
 from .forms import ClockInForm, SetUpForm
 from .models import ClockIn, SetUp
+from django.conf import settings
+from django.views.generic import DeleteView
+import datetime
 
 
 @login_required
@@ -23,7 +26,7 @@ def goal_home_view(request):
         clockin_form = ClockInForm(user)
         # get all clock in data
         clock_ins = ClockIn.objects.filter(user_id=user.id)
-        paginator = Paginator(clock_ins, 2)
+        paginator = Paginator(clock_ins, settings.PAGE_SIZE)
         page_number = request.GET.get('page')
         page_clockin = paginator.get_page(page_number)
         template_name = 'goal/goal_home.html'
@@ -60,7 +63,7 @@ def all_setup_veiw(request):
     '''
     # user = request.user
     setups = SetUp.objects.filter()
-    paginator = Paginator(setups, 2)
+    paginator = Paginator(setups, settings.PAGE_SIZE)
     page_number = request.GET.get('page')
     page_setup = paginator.get_page(page_number)
     template_name = 'goal/all_setup.html'
@@ -74,8 +77,25 @@ def all_clockin_view(request):
     '''
     # user = request.user
     clockIns = ClockIn.objects.filter()
-    paginator = Paginator(clockIns, 2)
+    paginator = Paginator(clockIns, settings.PAGE_SIZE)
     page_number = request.GET.get('page')
     page_clockIns = paginator.get_page(page_number)
     template_name = 'goal/all_clockin.html'
     return render(request, template_name, {"page_clockIns": page_clockIns})
+
+
+class ClockInDeleteView(DeleteView):
+    '''
+    删除打卡记录
+    '''
+    model = ClockIn
+
+    def get_success_url(self):
+        success_url = reverse("clockin")
+        return success_url
+
+    def get_object(self, *args, **kwargs):
+        obj = super(ClockInDeleteView, self).get_object(*args, **kwargs)
+        if datetime.datetime.now().date() > obj.created_time.date():
+            raise 
+        return obj
