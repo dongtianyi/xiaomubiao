@@ -12,6 +12,43 @@
     <title>{% block title %}home{% endblock %}</title>
   </head>
   <body>
+    {% block navbar %}
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'clockin' %}">
+                优雅生活{% if user.is_authenticated %}({{ user.username }}){% endif %}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'clockin' %}">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_setup' %}">大家的目标</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_clockin' %}">大家的打卡</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'goal_setup' %}">我的目标</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            {% if user.is_authenticated %}
+                                退出登录
+                            {% else %}
+                                未登录
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </nav>
+    {% endblock %}
     {% block content %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->

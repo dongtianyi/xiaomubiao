@@ -18,51 +18,43 @@
 {% block content %}
 <div class="container">
     <!-- Content here -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'clockin' %}">
-                优雅生活{% if user.is_authenticated %}({{ user.username }}){% endif %}
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">所有人</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">
-                            {% if user.is_authenticated %}
-                                退出登录
-                            {% else %}
-                                未登录
-                            {% endif %}
-                        </a>
-                    </li>
-                </ul>
+    <div class="row">
+        <p class="text-center fs-3">首页</p>
+    </div>
+    <div class="row">
+        <form enctype="multipart/form-data" action="{% url 'clockin' %}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form clockin_form %}
+            {% buttons %}<button type="submit" class="btn btn-primary form-control">Submit</button>{% endbuttons %}
+        </form>
+    </div>
+    <div class="row">
+        <div class="col">
+            目标
+        </div>
+        <div class="col">
+            图片
+        </div>
+        <div class="col">
+            打卡时间
+        </div>
+    </div>
+    {% for ci in page_clockin %}
+        <div class="row">
+            <div class="col">
+                {{ ci.setup.name }}
+            </div>
+            <div class="col">
+                <img src="{{ ci.image_0.url }}" class="img-fluid" style="height: 30px">
+            </div>
+            <div class="col">
+                {{ ci.created_time }}
             </div>
         </div>
-    </nav>
-
-    <form enctype="multipart/form-data" action="{% url 'clockin' %}" method="post" class="form">
-        {% csrf_token %}
-        {% bootstrap_form clockin_form %}
-        {% buttons %}<button type="submit" class="btn btn-primary">Submit</button>{% endbuttons %}
-    </form>
-
-    {% for ci in page_clockin %}
-    {# Each "contact" is a Contact model object. #}
-        {{ ci.setup_id }}<br>
-        <img src="{{ ci.image_0.url }}"><br>
-        {{ ci.created_time }}<br>
     {% endfor %}
-
-    {% bootstrap_pagination page_clockin url="" size="" %}
-   
-
+    <div class="row">
+        {% bootstrap_pagination page_clockin url="" size="" %}
+    </div>
 </div>
+
 {% endblock %}

@@ -1,0 +1,56 @@
+
+
+<!-- templates/home.html-->
+{% extends '../base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}设置目标{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- Content here -->
+        <div class="row">
+            <p class="text-center fs-3">我的目标</p>
+        </div>
+        <div class="row">
+            <form action="{% url 'goal_setup' %}" method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form setup_form %}
+                {% buttons %}<button type="submit" class="btn btn-primary form-control">Submit</button>{% endbuttons %}
+            </form>
+        </div>
+        <div class="row">
+            <div class="col">
+                目标
+            </div>
+            <div class="col">
+                打卡次数
+            </div>
+            <div class="col">
+                创建时间
+            </div>
+        </div>
+        {% for su in setups %}
+            <div class="row">
+                <div class="col">
+                    {{ su.name }}
+                </div>
+                <div class="col">
+                    {{ su.times }}
+                </div>
+                <div class="col">
+                    {{ su.created_time }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

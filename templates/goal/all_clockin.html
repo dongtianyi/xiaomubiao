@@ -1,0 +1,61 @@
+
+
+<!-- templates/home.html-->
+{% extends '../base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}打卡{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Content here -->
+    <div class="row">
+        <p class="text-center fs-3">所有打卡记录</p>
+    </div>
+    <div class="row">
+    <div class="col">
+            谁
+        </div>
+        <div class="col">
+            目标
+        </div>
+        <div class="col">
+            打卡次数
+        </div>
+        <div class="col">
+            创建时间
+        </div>
+    </div>
+    {% for ci in page_clockIns %}
+        <div class="row">
+            <div class="row">
+                <div class="col">
+                    {{ ci.user.name }}
+                </div>
+                <div class="col">
+                {{ ci.setup.name }}
+                </div>
+                <div class="col">
+                    <img src="{{ ci.image_0.url }}" class="img-fluid" style="height: 30px">
+                </div>
+                <div class="col">
+                    {{ ci.created_time }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        {% bootstrap_pagination page_clockIns url="" size="" %}
+    </div>
+</div>
+    
+{% endblock %}

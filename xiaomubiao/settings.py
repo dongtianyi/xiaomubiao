@@ -26,7 +26,7 @@ SECRET_KEY = '8m4596a+zvcza(tk^v!4lh#aie(_mc$kesl3**222$yqsg!5s1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -115,9 +115,11 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+DATETIME_FORMAT = 'Y-m-d H:i'
 
 
 # Static files (CSS, JavaScript, Images)
