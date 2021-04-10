@@ -1,4 +1,5 @@
 
+from django.core.exceptions import PermissionDenied, MiddlewareNotUsed
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 # from django.views import View
@@ -12,6 +13,8 @@ from .models import ClockIn, SetUp
 from django.conf import settings
 from django.views.generic import DeleteView
 import datetime
+from .goal_exceptions import CannotDeleteException
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 @login_required
@@ -62,7 +65,7 @@ def all_setup_veiw(request):
     所有人目标
     '''
     # user = request.user
-    setups = SetUp.objects.filter()
+    setups = SetUp.objects.filter(status=True)
     paginator = Paginator(setups, settings.PAGE_SIZE)
     page_number = request.GET.get('page')
     page_setup = paginator.get_page(page_number)
@@ -75,8 +78,7 @@ def all_clockin_view(request):
     '''
     所有人的打卡
     '''
-    # user = request.user
-    clockIns = ClockIn.objects.filter()
+    clockIns = ClockIn.objects.filter().order_by("user", "setup")
     paginator = Paginator(clockIns, settings.PAGE_SIZE)
     page_number = request.GET.get('page')
     page_clockIns = paginator.get_page(page_number)
@@ -84,7 +86,7 @@ def all_clockin_view(request):
     return render(request, template_name, {"page_clockIns": page_clockIns})
 
 
-class ClockInDeleteView(DeleteView):
+class ClockInDeleteView(LoginRequiredMixin, DeleteView):
     '''
     删除打卡记录
     '''
@@ -94,8 +96,8 @@ class ClockInDeleteView(DeleteView):
         success_url = reverse("clockin")
         return success_url
 
-    def get_object(self, *args, **kwargs):
-        obj = super(ClockInDeleteView, self).get_object(*args, **kwargs)
-        if datetime.datetime.now().date() > obj.created_time.date():
-            raise 
-        return obj
+    # def get_object(self, *args, **kwargs):
+    #     obj = super(ClockInDeleteView, self).get_object(*args, **kwargs)
+    #     if datetime.datetime.now().date() > obj.created_time.date():
+    #         raise CannotDeleteException("非当日打卡不能删除")
+    #     return obj

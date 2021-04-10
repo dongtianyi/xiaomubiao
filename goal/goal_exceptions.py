@@ -1,0 +1,4 @@
+
+
+class CannotDeleteException(Exception):
+    pass

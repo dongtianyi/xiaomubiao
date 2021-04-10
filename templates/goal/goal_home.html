@@ -30,6 +30,11 @@
     </div>
     <div class="row">
         <div class="col">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             目标
         </div>
         <div class="col">
@@ -40,6 +45,11 @@
         </div>
         <div class="col">
             操作
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
         </div>
     </div>
     {% for ci in page_clockin %}
@@ -55,6 +65,11 @@
             </div>
             <div class="col">
                 <a class="nav-link" href="{% url 'delete_clockin' pk=ci.id %}">删除</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr>
             </div>
         </div>
     {% endfor %}

@@ -21,6 +21,8 @@ class SetUp(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     # 更新时间
     update_time = models.DateTimeField(auto_now=True)
+    # 状态, 生效, 停止
+    status = models.BooleanField('目标状态', default=1)
 
 
 class Balance(models.Model):

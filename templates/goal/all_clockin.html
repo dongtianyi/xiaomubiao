@@ -35,6 +35,11 @@
             创建时间
         </div>
     </div>
+    <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
     {% for ci in page_clockIns %}
         <div class="row">
             <div class="row">
@@ -52,9 +57,14 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
     {% endfor %}
     <div class="row">
-        {% bootstrap_pagination page_clockIns url="" size="" %}
+        {% bootstrap_pagination page_clockIns url="" size="large" %}
     </div>
 </div>
     
