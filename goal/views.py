@@ -140,7 +140,7 @@ class SettlementView(LoginRequiredMixin, View):
             is_current_week = True
         start_date = get_first_day_week(week_day)
         end_date = get_last_day_week(week_day)
-        print(start_date, end_date)
+        # print(start_date, end_date)
         clock_result = []
         setups = SetUp.objects.filter(status=True).order_by("user")
         for setup in setups:

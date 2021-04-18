@@ -7,7 +7,7 @@ def get_first_day_week(m_data):
     one_day = datetime.timedelta(days=1)
     while monday.weekday() != 0:
         monday -= one_day
-    return monday
+    return monday.date()
 
 
 def get_last_day_week(m_data):
@@ -16,4 +16,4 @@ def get_last_day_week(m_data):
     one_day = datetime.timedelta(days=1)
     while monday.weekday() != 6:
         monday += one_day
-    return monday
+    return monday.date()
