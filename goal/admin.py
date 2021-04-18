@@ -5,11 +5,11 @@ from .models import ClockIn, SetUp, Balance
 
 
 class SetUpAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'status')
+    list_display = ('user', 'name', 'status', 'created_time')
 
 
 class ClockInAdmin(admin.ModelAdmin):
-    list_display = ('user', 'setup', 'image_0')
+    list_display = ('user', 'setup', 'image_0', 'created_time')
 
 
 class BalanceAdmin(admin.ModelAdmin):
