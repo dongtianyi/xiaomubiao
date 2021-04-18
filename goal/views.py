@@ -11,10 +11,11 @@ from django.urls import reverse
 from .forms import ClockInForm, SetUpForm
 from .models import ClockIn, SetUp
 from django.conf import settings
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, View
 import datetime
 from .goal_exceptions import CannotDeleteException
 from django.contrib.auth.mixins import LoginRequiredMixin
+from core.utils import get_first_day_week, get_last_day_week
 
 
 @login_required
@@ -101,3 +102,73 @@ class ClockInDeleteView(LoginRequiredMixin, DeleteView):
     #     if datetime.datetime.now().date() > obj.created_time.date():
     #         raise CannotDeleteException("非当日打卡不能删除")
     #     return obj
+
+
+class SettlementView(LoginRequiredMixin, View):
+    '''
+    查看当周或者上周完成情况
+    '''
+
+    def get(self, request):
+        # <view logic>
+        '''
+        谁 目标(id) 目标次数 打卡次数 是否完成
+        [
+            {
+                "user": "name",
+                "setup": "goal",
+                "times": 2,
+                "clock_time": 3,
+                "clock_status": Ture
+            },
+            {
+                "user": "name",
+                "setup": "goal",
+                "times": 2,
+                "clock_time": 3,
+                "clock_status": Ture
+            },
+        ]
+        '''
+        # 获取指定日期:
+        week = request.GET.get('week')
+        if week and week.lower() == "last":
+            week_day = datetime.datetime.today() - datetime.timedelta(days=7)
+            is_current_week = False
+        else:
+            week_day = datetime.datetime.today()
+            is_current_week = True
+        start_date = get_first_day_week(week_day)
+        end_date = get_last_day_week(week_day)
+        print(start_date, end_date)
+        clock_result = []
+        setups = SetUp.objects.filter(status=True).order_by("user")
+        for setup in setups:
+            clock_count = ClockIn.objects.filter(
+                setup=setup, created_time__range=(start_date, end_date)).count()
+            if clock_count < setup.times:
+                clock_status = False
+            else:
+                clock_status = True
+            result = {
+                "user": setup.user.last_name,
+                "setup": setup.name + "(id=" + str(setup.id) + ")",
+                "times": setup.times,
+                "clock_time": clock_count,
+                "clock_status": clock_status,
+            }
+            clock_result.append(result)
+        template_name = 'goal/goal_settlement.html'
+        paginator = Paginator(clock_result, settings.PAGE_SIZE)
+        page_number = request.GET.get('page')
+        page_clock_result = paginator.get_page(page_number)
+        return render(
+            request,
+            template_name,
+            {
+                'page_clock_result': page_clock_result,
+                "start_date": start_date,
+                "end_date": end_date,
+                "is_current_week": is_current_week,
+            }
+        )

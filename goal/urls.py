@@ -9,4 +9,6 @@ urlpatterns = [
     path('all_clockin/', views.all_clockin_view, name='all_clockin'),
     # 删除打卡
     path('clockin/<pk>/', views.ClockInDeleteView.as_view(), name='delete_clockin'),
+    # 查看结果
+    path('settlement/', views.SettlementView.as_view(), name='settlement_view'),
 ]

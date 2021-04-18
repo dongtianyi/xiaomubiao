@@ -1,0 +1,102 @@
+
+
+<!-- templates/home.html-->
+{% extends '../base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}查看结果{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Content here -->
+    <div class="row">
+        <p class="text-center fs-3">查看结果: {% if is_current_week %}本周{% else %}上周{% endif %}</p>
+    </div>
+    <div class="row">
+        <p class="text-center fs-3">{{start_date | date:"Y-m-d"}}~{{end_date | date:"Y-m-d"}}</p>
+    </div>
+    
+
+    <div class="row">
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            谁
+        </div>
+        <div class="col">
+            目标(id)
+        </div>
+        <div class="col">
+            目标次数
+        </div>
+        <div class="col">
+            打卡次数
+        </div>
+        <div class="col">
+            是否完成
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+    {% for cr in page_clock_result %}
+        <div class="row">
+            <div class="col">
+                {{ cr.user }}
+            </div>
+            <div class="col">
+                {{ cr.setup }}
+            </div>
+            <div class="col">
+                {{ cr.times }}
+            </div>
+            <div class="col">
+                {{ cr.clock_time }}
+            </div>
+            <div class="col">
+                {% if cr.clock_status %} 
+                    <p class="text-success">已完成</p>
+                {% else %}
+                    <p class="text-danger">未完成</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row">
+        {% bootstrap_pagination page_clock_result url="" size="large" %}
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary form-control" href="{% url 'settlement_view' %}?week=last" role="button">查看上周</a>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary form-control" href="{% url 'settlement_view' %}" role="button">查看本周</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
