@@ -5,6 +5,7 @@ from django.shortcuts import render
 # from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_list_or_404
+from django.http import Http404
 from django.core.paginator import Paginator
 from django.urls import reverse
 
@@ -97,11 +98,11 @@ class ClockInDeleteView(LoginRequiredMixin, DeleteView):
         success_url = reverse("clockin")
         return success_url
 
-    # def get_object(self, *args, **kwargs):
-    #     obj = super(ClockInDeleteView, self).get_object(*args, **kwargs)
-    #     if datetime.datetime.now().date() > obj.created_time.date():
-    #         raise CannotDeleteException("非当日打卡不能删除")
-    #     return obj
+    def get_object(self, *args, **kwargs):
+        obj = super(ClockInDeleteView, self).get_object(*args, **kwargs)
+        if datetime.datetime.now().date() > obj.created_time.date():
+            raise Http404("非当周打卡不能删除")
+        return obj
 
 
 class SettlementView(LoginRequiredMixin, View):
