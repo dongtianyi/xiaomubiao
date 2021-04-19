@@ -80,7 +80,7 @@ def all_clockin_view(request):
     '''
     所有人的打卡
     '''
-    clockIns = ClockIn.objects.filter().order_by("user", "setup")
+    clockIns = ClockIn.objects.filter().order_by("created_time")
     paginator = Paginator(clockIns, settings.PAGE_SIZE)
     page_number = request.GET.get('page')
     page_clockIns = paginator.get_page(page_number)
